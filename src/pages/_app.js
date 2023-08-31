@@ -8,7 +8,7 @@ export default function App({
 }) {
   // Wrap the entire application with the SessionProvider so all components have access to the session context
   return (
-    <SessionProvider session={session}>
+    <SessionProvider initialSession={session}>
       <Component {...pageProps} />
     </SessionProvider>
   );

@@ -24,7 +24,6 @@ export function SessionProvider({ children }) {
     const fetchSession = async () => {
       try {
         const session = await getSession();
-        console.log("Fetched session in useEffect: ", session);
         setSession(session);
       } catch (error) {
         console.error("Error fetching session: ", error);
