@@ -1,15 +1,8 @@
 import { useSession } from "../../src/contexts/SessionContext";
 import { signIn, signOut } from "next-auth/react";
-import { getSession } from "next-auth/react"; // Import getSession
 
 export const SpotifyLogin = () => {
-  const { session, setSession, error } = useSession();
-
-  // Function to manually fetch session
-  const fetchSession = async () => {
-    const newSession = await getSession();
-    setSession(newSession);
-  };
+  const { session, error } = useSession();
 
   console.log("Session in SpotifyLogin:", session);
 
