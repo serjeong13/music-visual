@@ -1,8 +1,11 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import { SpotifyLogin } from "../../components/SpotifyLogin";
 
 export default function Home() {
-  return <main>HELLO MACE! I am fucking back!</main>;
+  return (
+    <main>
+      <h1>HELLO MACE! I am back!</h1>
+      <SpotifyLogin />
+    </main>
+  );
 }
