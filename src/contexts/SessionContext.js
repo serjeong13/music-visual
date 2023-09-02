@@ -7,6 +7,8 @@ export const SessionContext = createContext({
   setSession: () => {},
   error: null,
   setError: () => {},
+  playlists: null,
+  setPlaylists: () => {},
 });
 
 // A custom hook for components to access the session context
@@ -18,6 +20,7 @@ export function useSession() {
 export function SessionProvider({ children }) {
   const [session, setSession] = useState(null);
   const [error, setError] = useState(null);
+  const [playlists, setPlaylists] = useState(null);
 
   // Fetch the session when the component mounts
   useEffect(() => {
@@ -26,7 +29,7 @@ export function SessionProvider({ children }) {
         const session = await getSession();
         setSession(session);
       } catch (error) {
-        console.error("Error fetching session: ", error);
+        setError(error);
       }
     };
 
@@ -39,6 +42,8 @@ export function SessionProvider({ children }) {
     setSession,
     error,
     setError,
+    playlists,
+    setPlaylists,
   };
 
   // Provide the session context to child components
