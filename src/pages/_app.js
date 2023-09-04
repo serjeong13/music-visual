@@ -1,6 +1,6 @@
 // Importing SessionProvider from our context
 import { SessionProvider } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import "../styles/globals.css";
 
 // The main App component
 export default function App({

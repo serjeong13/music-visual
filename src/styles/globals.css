@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -18,10 +18,10 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: rgb(92, 106, 150) !important;
+  background: rgb(var(--background-start-rgb));
+}
+
+button {
+  @apply px-8 py-1 border-2 rounded font-bold text-white border-green-500 bg-blue-400 hover:bg-blue-500 hover:border-blue-700;
 }
