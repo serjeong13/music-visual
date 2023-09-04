@@ -10,14 +10,17 @@ export default NextAuth({
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, account }) {
+      console.log("JWT callback", token, account);
       if (account) {
         token.accessToken = account.refresh_token;
       }
       return token;
     },
     async session(session, user) {
+      console.log("Session callback", session, user);
       session.user = user;
       return session;
     },
