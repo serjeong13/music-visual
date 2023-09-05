@@ -6,7 +6,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [list, setList] = useState([]);
 
-  console.log("Session Data:", session);
+  //console.log("Session Data:", session);
 
   const getMyPlaylists = async () => {
     try {

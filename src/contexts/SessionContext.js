@@ -7,7 +7,7 @@ export function useSession() {
   return useContext(SessionContext);
 }
 
-export function SessionProvider({ children }) {
+export function CustomSessionProvider({ children }) {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
@@ -25,6 +25,8 @@ export function SessionProvider({ children }) {
     session,
     setSession,
   };
+
+  console.log("Context value:", value);
 
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
