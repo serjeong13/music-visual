@@ -1,4 +1,3 @@
-// Importing SessionProvider from our context
 import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 

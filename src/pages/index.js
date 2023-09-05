@@ -1,6 +1,9 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
+import SignOutButton from "../../components/SignOutButton";
+import SignInButton from "../../components/SignInButton";
+import PlaylistDisplay from "../../components/PlaylistDisplay";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -25,13 +28,8 @@ export default function Home() {
   if (session) {
     return (
       <>
-        Signed in as {session?.token?.email} <br />
-        <button
-          onClick={() => signOut()}
-          className="btn btn-primary mx-auto my-2"
-        >
-          Sign out
-        </button>
+        You are signed in as {session?.token?.email} <br />
+        <SignOutButton />
         <hr />
         <button
           onClick={getMyPlaylists}
@@ -39,27 +37,14 @@ export default function Home() {
         >
           Get my playlists
         </button>
-        {list &&
-          list.map((item) => (
-            <div key={item.id} className="flex justify-end items-center my-4">
-              <h1 className="text-lg font-bold mx-4">{item.name}</h1>
-              <Image
-                src={item.images[0]?.url}
-                alt={item.name}
-                width={300}
-                height={300}
-              />
-            </div>
-          ))}
+        <PlaylistDisplay list={list} />
       </>
     );
   }
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()} className="btn btn-primary mx-auto my-2">
-        Sign in
-      </button>
+      Hello, please sign in <br />
+      <SignInButton />
     </>
   );
 }

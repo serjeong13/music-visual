@@ -10,7 +10,11 @@ export default NextAuth({
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     }),
   ],
+
+  //using NEXTAUTH_SECRET for added security.
   secret: process.env.NEXTAUTH_SECRET,
+
+  //in JWT callback adding the refresh_token from the account to the token object.
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
@@ -18,6 +22,8 @@ export default NextAuth({
       }
       return token;
     },
+
+    //in session callback updating the session object with the user object.
     async session(session, user) {
       session.user = user;
       return session;
