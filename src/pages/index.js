@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import Image from "next/image";
 import SignOutButton from "../../components/SignOutButton";
 import SignInButton from "../../components/SignInButton";
 import PlaylistDisplay from "../../components/PlaylistDisplay";
@@ -9,7 +8,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [list, setList] = useState([]);
 
-  //console.log("Session Data:", session);
+  console.log("session data", session);
 
   const getMyPlaylists = async () => {
     try {
