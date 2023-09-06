@@ -22,13 +22,16 @@ const getAccessToken = async (refresh_token) => {
     }),
   });
 
-  return response.json();
+  if (response.ok) {
+    return await response.json();
+  }
+
+  throw new Error("Failed to get access token");
 };
 
 // Function to get the user playlists
 export const getUserPlaylists = async (refresh_token) => {
   const { access_token } = await getAccessToken(refresh_token);
-  console.log("Access Token_getplaylists:", access_token);
   return fetch(playlists_endpoint, {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -39,9 +42,8 @@ export const getUserPlaylists = async (refresh_token) => {
 // Function to get the tracks from a playlist
 export const getPlaylistTracks = async (refresh_token, playlistId) => {
   const { access_token } = await getAccessToken(refresh_token);
-  console.log("Access Token_getplayliststracks:", access_token);
   return fetch(
-    `https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=items(track(name,href))`,
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=items(track(name,uri,id,href,artists(name)))`,
     {
       headers: {
         Authorization: `Bearer ${access_token}`,

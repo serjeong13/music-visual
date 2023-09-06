@@ -4,10 +4,12 @@ import { getSession } from "next-auth/react";
 const handler = async (req, res) => {
   try {
     const session = await getSession({ req });
+    console.log("session111111111", session);
     if (!session) {
       //401 status if the session is not found.
       return res.status(401).json({ error: "Unauthorized try" });
     }
+
     const {
       token: { accessToken },
     } = session;
