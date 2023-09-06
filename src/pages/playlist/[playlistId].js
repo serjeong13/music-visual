@@ -3,26 +3,23 @@ import useSWR from "swr";
 import { useSession } from "next-auth/react";
 
 // Fetcher function for SWR, using the session token for Authorization
-const fetcher = async (url, token) => {
-  //console.log("Token Object:", session?.token);
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  // Throw an error if the request fails
-  if (!res.ok) {
+const fetcher = async (url, refreshToken) => {
+  try {
+    const res = await fetch(url, refreshToken);
+    if (!res.ok) {
+      throw new Error("An error occurred while fetching the data");
+    }
+    return res.json();
+  } catch (error) {
     throw new Error("Network response was not ok");
   }
-
-  return res.json();
 };
 
 export default function PlaylistPage() {
   // Using NextAuth useSession hook for session management
   const { data: session } = useSession();
   const accessToken = session?.token?.accessToken || "";
+  console.log("accessToken", accessToken);
 
   // Using Next.js router to capture dynamic route parameters
   const router = useRouter();
@@ -32,14 +29,10 @@ export default function PlaylistPage() {
   // Using SWR to fetch playlist details
   const { data, error } = useSWR(
     // Conditional fetching, based on whether playlistId exists
-    playlistId
-      ? [
-          `https://api.spotify.com/v1/playlists/${playlistId}/tracks?fields=items(track(name,href))`,
-          accessToken,
-        ]
-      : null,
+    playlistId ? [`/api/tracks/${playlistId}`, accessToken] : null,
     fetcher
   );
+  console.log("data", data);
 
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Loading...</div>;
