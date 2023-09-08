@@ -8,7 +8,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [list, setList] = useState([]);
 
-  console.log("session data", session);
+  console.log("session on fireeeeeeee", session);
 
   const getMyPlaylists = async () => {
     try {

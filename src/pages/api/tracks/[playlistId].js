@@ -11,6 +11,7 @@ const handler = async (req, res) => {
     const {
       token: { accessToken },
     } = session;
+
     const playlistId = req.query.playlistId;
 
     const response = await getPlaylistTracks(accessToken, playlistId);

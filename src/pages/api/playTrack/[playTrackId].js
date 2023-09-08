@@ -1,35 +1,32 @@
-import { getUserPlaylists } from "../../../public/lib/spotify.js";
+import { playTrackSpotifyPlayer } from "../../../../public/lib/spotify";
 import { getSession } from "next-auth/react";
 
 const handler = async (req, res) => {
   try {
     const session = await getSession({ req });
     if (!session) {
-      //401 status if the session is not found.
       return res.status(401).json({ error: "Unauthorized try" });
     }
-
     const {
       token: { accessToken },
     } = session;
 
-    //API call to Spotify by using getUserPlaylists function which needs an access token, grabbed from the session.
-    const response = await getUserPlaylists(accessToken);
+    const playTrackId = req.query.playTrackId;
+
+    const response = await playTrackSpotifyPlayer(accessToken, playTrackId);
+
     if (!response.ok) {
       const errorData = await response.json();
       return res.status(response.status).json({
         error: "Spotify API error",
-        //the specific error message from Spotify API.
         errorMessage: errorData.error.message,
       });
     }
 
-    const { items } = await response.json();
+    const items = await response.json();
 
-    // send a success status with a message
-    res.status(200).json({ name: "Playlists API success", playlists: items });
+    res.status(200).json({ name: "Play Track API success", playTrack: items });
   } catch (error) {
-    //500 status in case of internal server errors.
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
