@@ -9,24 +9,41 @@ const token_endpoint = process.env.TOKEN_ENDPOINT;
 const playlists_endpoint = process.env.PLAYLISTS_ENDPOINT;
 
 // Function to get an access token using a refresh token
-const getAccessToken = async (refresh_token) => {
-  const response = await fetch(token_endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${basic}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token,
-    }),
-  });
-
-  if (response.ok) {
-    return await response.json();
+export const getAccessToken = async (refresh_token) => {
+  if (!refresh_token) {
+    console.error("Refresh token is undefined in getAccessToken function");
+    return;
   }
+  try {
+    const response = await fetch(token_endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${basic}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token,
+      }),
+    });
 
-  throw new Error("Failed to get access token");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Spotify API Error: ${errorData.error}`);
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.error("Received non-JSON response from Spotify API");
+      return null;
+    }
+
+    const responseBody = await response.json();
+    return responseBody;
+  } catch (error) {
+    console.error("Exception thrown:", error);
+    throw new Error(`Failed to get access token: ${error.message}`);
+  }
 };
 
 // Function to get the user playlists
@@ -50,4 +67,32 @@ export const getPlaylistTracks = async (refresh_token, playlistId) => {
       },
     }
   );
+};
+
+// Function to get the details of a track
+export const getTrackDetails = async (refresh_token, trackId) => {
+  if (!refresh_token) {
+    console.error("Refresh token is undefined");
+    return null;
+  }
+  const { access_token } = await getAccessToken(refresh_token);
+  return fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
+};
+
+// function to get access_token for SpotifyPlayer component
+export const playTrackSpotifyPlayer = async (refresh_token) => {
+  if (!refresh_token) {
+    console.error("Refresh token is undefined");
+    return null;
+  }
+  const { access_token } = await getAccessToken(refresh_token);
+  return fetch(`https://api.spotify.com/v1/me/player`, {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
 };

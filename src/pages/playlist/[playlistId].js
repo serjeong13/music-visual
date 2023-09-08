@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import Link from "next/link";
 
 // Fetcher function for SWR, using the session token for Authorization
 const fetcher = async (url, refreshToken) => {
@@ -35,18 +36,13 @@ export default function PlaylistPage() {
       <ul>
         {data.tracks.map((item) => (
           <li key={item.track.id}>
-            <h2>{item.track.name}</h2>
-            <p>
-              Link:{" "}
-              <a
-                href={item.track.uri}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Open on Spotify
-              </a>
-            </p>
-            <p>Artist: {item.track.artists[0].name}</p>
+            <Link href={`/track/${item.track.id}`}>
+              <>
+                {" "}
+                <h2>{item.track.name}</h2>
+                <h2>Artist: {item.track.artists[0].name}</h2>
+              </>
+            </Link>
           </li>
         ))}
       </ul>
