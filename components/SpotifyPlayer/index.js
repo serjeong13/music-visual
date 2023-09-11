@@ -1,96 +1,100 @@
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { playTrackSpotifyPlayer } from "../../public/lib/spotify";
+// import React, { useEffect, useState } from "react";
+// import { useSession } from "next-auth/react";
+// import axios from "axios";
 
-// This is the Spotify Player component that will be used to play the tracks.
-export default function SpotifyPlayer({ playTrackId }) {
-  const { data: sessionData } = useSession();
-  const session = sessionData?.session;
+// // This is the Spotify Player component that will be used to play the tracks.
+// export default function SpotifyPlayer({ trackId }) {
+//   const { data: sessionData } = useSession();
+//   const session = sessionData?.session;
+//   const [player, setPlayer] = useState(null);
+//   const [playbackState, setPlaybackState] = useState(null);
+//   const [accessToken, setAccessToken] = useState(null);
 
-  const [player, setPlayer] = useState(null);
-  // This state will be used to keep track of the current track.
-  const [playbackState, setPlaybackState] = useState(null);
+//   const refreshToken = async () => {
+//     try {
+//       const response = await axios.post("/api/refresh_token", {
+//         refreshToken: session.user?.refresh_token,
+//       });
+//       setAccessToken(response.data.accessToken);
+//     } catch (error) {
+//       console.error("Failed to refresh token", error.message);
+//     }
+//   };
 
-  //This useEffect hook will be used to load the Spotify Web Playback SDK script.
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://sdk.scdn.co/spotify-player.js";
-    script.async = true;
+//   useEffect(() => {
+//     if (!session) {
+//       console.error("Session or user details are not available.");
+//       return; // Exit the function early
+//     }
+//     refreshToken();
+//   }, [session]);
 
-    document.body.appendChild(script);
+//   //This useEffect hook will be used to load the Spotify Web Playback SDK script.
+//   useEffect(() => {
+//     const script = document.createElement("script");
+//     script.src = "https://sdk.scdn.co/spotify-player.js";
+//     script.async = true;
+//     document.body.appendChild(script);
 
-    // This function will be called when the Spotify Web Playback SDK script is loaded.
-    window.onSpotifyWebPlaybackSDKReady = async () => {
-      console.log("Session Data:", session);
-      if (!session) {
-        console.error("Session or user details are not available.");
-        return; // Exit the function early
-      }
-      const response = await playTrackSpotifyPlayer(
-        session.user?.refresh_token,
-        playTrackId
-      );
+//     // This function will be called when the Spotify Web Playback SDK script is loaded.
+//     window.onSpotifyWebPlaybackSDKReady = async () => {
+//       console.log("Session Data on spotifyplayer:", session);
+//       if (!accessToken) {
+//         console.error("No access token available. Cannot proceed.");
+//         return;
+//       }
 
-      if (!response) {
-        console.error("No access token available. Cannot proceed.");
-        return;
-      }
+//       const playerInstance = new window.Spotify.Player({
+//         name: "Spotify Player",
+//         getOAuthToken: (cb) => {
+//           cb(accessToken);
+//         },
+//       });
+//       setPlayer(playerInstance);
+//     };
+//   }, [accessToken]);
 
-      console.log(
-        "Access Token:",
-        response.headers.Authorization.split(" ")[1]
-      );
-      const player = new window.Spotify.Player({
-        name: "Spotify Player",
-        getOAuthToken: (cb) => {
-          cb(response.headers.Authorization.split(" ")[1]);
-        },
-      });
-      setPlayer(player);
-    };
-  }, [playTrackId, session]);
+//   // This useEffect hook will be used to connect the player to the Spotify Web Playback SDK.
+//   useEffect(() => {
+//     if (!player) return;
+//     player.addListener("player state changed", (state) => {
+//       console.log("Spotify Player State Changed:", state);
+//       setPlaybackState(state);
+//     });
+//     player.connect();
+//   }, [player]);
 
-  // This useEffect hook will be used to connect the player to the Spotify Web Playback SDK.
-  useEffect(() => {
-    if (!player) return;
-    player.addListener("player state changed", (state) => {
-      console.log("Player State Changed:", state);
-      setPlaybackState(state);
-    });
-    player.connect();
-  }, [player]);
+//   // This useEffect hook will be used to play the track based on trackId.
+//   useEffect(() => {
+//     if (!player || !trackId) return;
 
-  // This useEffect hook will be used to play the track based on trackId.
-  useEffect(() => {
-    if (!player || !playTrackId) return;
+//     player.play({ uris: [`spotify:track:${trackId}`] });
+//   }, [player, trackId]);
 
-    player.play({ uris: [`spotify:track:${playTrackId}`] });
-  }, [player, playTrackId]);
-
-  return (
-    <div>
-      <button
-        onClick={() => {
-          if (player) {
-            player.togglePlay().then(() => {
-              console.log("Toggled playback!");
-            });
-          }
-        }}
-      >
-        Toggle Play/Pause
-      </button>
-      <div>
-        {playbackState && (
-          <div>
-            <p>Track: {playbackState.track_window.current_track.name}</p>
-            <p>
-              Artist: {playbackState.track_window.current_track.artists[0].name}
-            </p>
-            <p>Status: {playbackState.paused ? "Paused" : "Playing"}</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <button
+//         onClick={() => {
+//           if (player) {
+//             player.togglePlay().then(() => {
+//               console.log("Spotify player Toggled playback!");
+//             });
+//           }
+//         }}
+//       >
+//         Toggle Play/Pause
+//       </button>
+//       <div>
+//         {playbackState && (
+//           <div>
+//             <p>Track: {playbackState.track_window.current_track.name}</p>
+//             {/* <p>
+//               Artist: {playbackState.track_window.current_track.artists[0].name}
+//             </p> */}
+//             <p>Status: {playbackState.paused ? "Paused" : "Playing"}</p>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }

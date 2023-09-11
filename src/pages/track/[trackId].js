@@ -1,6 +1,9 @@
 import { useRouter } from "next/router";
 import useSwr from "swr";
 import Link from "next/link";
+// import SpotifyPlayer from "../../../components/SpotifyPlayer";
+// import SpotifyWebPlayer from "../../../components/SpotifyWebPlayer";
+import WebPlayBack from "../../../components/WebPlayBack";
 
 // Fetcher function for SWR, using the session token for Authorization
 
@@ -18,7 +21,7 @@ export default function TrackPage() {
     }
   };
 
-  // Using SWR to fetch playlist details
+  // Using SWR to fetch track details
   const { data, error } = useSwr(
     trackId ? `/api/track/${trackId}` : null,
     fetcher
@@ -31,7 +34,7 @@ export default function TrackPage() {
     return <div>Track details are not available.</div>;
   }
 
-  const artistName = data?.track?.artists?.[0]?.name;
+  // getAuth token
 
   return (
     <div>
@@ -42,14 +45,16 @@ export default function TrackPage() {
             <h2> Song: {data?.track?.name || "Unknown Track"}</h2>
             <p>By: {data?.track?.artists?.[0]?.name}</p>
             <p>from the Album: {data?.track?.album?.name}</p>
-            <p>{data?.track?.album?.id}</p>
           </li>
         ) : (
           <p>Artist is not available</p>
         )}
       </ul>
       <br></br>
-      <Link href={`/playTrack/${data?.track?.id}`}>Listen in the Player</Link>
+      <h2>Spotify Player</h2>
+      {/* <SpotifyPlayer trackId={trackId} /> */}
+      {/* <SpotifyWebPlayer trackId={trackId} /> */}
+      <WebPlayBack token={data?.token} track={data?.track} />
     </div>
   );
 }

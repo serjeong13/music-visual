@@ -1,4 +1,5 @@
 import { getTrackDetails } from "../../../../public/lib/spotify";
+import { getToken } from "../../../../public/lib/spotify";
 import { getSession } from "next-auth/react";
 
 // Define an asynchronous handler function for the API route
@@ -20,7 +21,9 @@ const handler = async (req, res) => {
 
     // Fetch track details using the access token and track ID
     const response = await getTrackDetails(accessToken, trackId);
+    const response_token = await getToken(accessToken);
 
+    console.log("response_token", response_token);
     if (!response.ok) {
       // If the response is not OK, parse the JSON to get the error details
       const errorData = await response.json();
@@ -32,7 +35,9 @@ const handler = async (req, res) => {
 
     const items = await response.json();
 
-    res.status(200).json({ name: "Track API success", track: items });
+    res
+      .status(200)
+      .json({ name: "Track API success", track: items, token: response_token });
   } catch (error) {
     console.error(`Error in track API: ${error.message}`);
     const statusCode = error.statusCode || 500;

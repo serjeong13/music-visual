@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import SpotifyPlayer from "../../../components/SpotifyPlayer";
+import { useEffect } from "react";
 
 export default function PlayerPage() {
   // Using Next.js router to capture dynamic route parameters
@@ -10,7 +11,11 @@ export default function PlayerPage() {
   // Fetcher function for SWR, using the session token for Authorization
   const fetcher = async (url, refreshToken) => {
     try {
-      const res = await fetch(url, refreshToken);
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      });
       if (!res.ok) {
         console.error(`Fetch Error. Status Code: ${res.status}`);
         throw new Error("An error occurred while fetching the data");
@@ -28,15 +33,13 @@ export default function PlayerPage() {
     fetcher
   );
 
-  console.log("data", data);
-
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Loading...</div>;
 
   return (
     <div>
       <h1>Spotify Player</h1>
-      <SpotifyPlayer playTrackId={playTrackId} />
+      {/* <SpotifyPlayer playTrackId={playTrackId} /> */}
       <ul>
         {data && data.track ? (
           <li key={data?.track?.id}>
