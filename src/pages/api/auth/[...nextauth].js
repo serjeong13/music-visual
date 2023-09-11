@@ -5,7 +5,7 @@ export default NextAuth({
   providers: [
     SpotifyProvider({
       authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email,playlist-read-private,user-read-private,user-read-playback-state, user-modify-playback-state",
+        "https://accounts.spotify.com/authorize?scope=user-read-email,playlist-read-private,user-read-private,user-read-playback-state,app-remote-control,streaming,user-modify-playback-state, user-read-currently-playing",
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     }),

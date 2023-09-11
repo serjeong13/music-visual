@@ -10,11 +10,13 @@ const handler = async (req, res) => {
     const {
       token: { accessToken },
     } = session;
-
     const playTrackId = req.query.playTrackId;
-
-    const response = await playTrackSpotifyPlayer(accessToken, playTrackId);
-
+    const response = await playTrackSpotifyPlayer(
+      accessToken,
+      playTrackId
+    ).catch((error) => {
+      console.error("error", error);
+    });
     if (!response.ok) {
       const errorData = await response.json();
       return res.status(response.status).json({
@@ -24,9 +26,9 @@ const handler = async (req, res) => {
     }
 
     const items = await response.json();
-
     res.status(200).json({ name: "Play Track API success", playTrack: items });
   } catch (error) {
+    console.error("error", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
