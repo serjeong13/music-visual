@@ -13,25 +13,31 @@ function WebPlayback(props) {
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [current_track, setTrack] = useState(track);
-  const [userInput, setUserInput] = useState("ahtyfkjnkm");
+  const [userInput, setUserInput] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
+
   const handleInput = (e) => {
-    console.log(e.target.value);
     setUserInput(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // send userInput to backend
-    console.log("user inputttttt", userInput);
-    fetch(`/api/handleUserInput`, {
+    const res = await fetch(`/api/handleUserInput`, {
       method: "POST",
       body: JSON.stringify({ userInput }),
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => console.log("res------------------------", res.json()));
+    });
+    const data = await res.json();
+    console.log("data------------------------", data);
+
+    if (data.data) {
+      setImageUrl(data.data[0].url);
+    }
+
     setUserInput("");
-    player.togglePlay();
   };
 
   // Run this once when the component mounts
@@ -110,6 +116,12 @@ function WebPlayback(props) {
               {props.track.artists[0].name}
             </div>
 
+            {imageUrl && (
+              <div className="image-container">
+                <img src={imageUrl} alt="Generated image" />
+              </div>
+            )}
+
             <button
               onClick={() => {
                 player.togglePlay();
@@ -122,7 +134,7 @@ function WebPlayback(props) {
         <br></br>
         {is_paused && (
           <form onSubmit={handleSubmit}>
-            <input type="text" onChange={handleInput} />
+            <input type="text" value={userInput} onChange={handleInput} />
             <button>Submit</button>
           </form>
         )}

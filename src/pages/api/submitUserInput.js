@@ -9,7 +9,7 @@ const headers = {
 const generateImages = async (userInput, callback) => {
   const payLoad = JSON.stringify({
     prompt: userInput,
-    n: 2,
+    n: 1,
   });
 
   const options = {
