@@ -1,8 +1,5 @@
 import { useRouter } from "next/router";
 import useSwr from "swr";
-import Link from "next/link";
-// import SpotifyPlayer from "../../../components/SpotifyPlayer";
-// import SpotifyWebPlayer from "../../../components/SpotifyWebPlayer";
 import WebPlayBack from "../../../components/WebPlayBack";
 
 // Fetcher function for SWR, using the session token for Authorization
@@ -38,22 +35,7 @@ export default function TrackPage() {
 
   return (
     <div>
-      <h1>Track Details</h1>
-      <ul>
-        {data && data.track ? (
-          <li key={data?.track?.id}>
-            <h2> Song: {data?.track?.name || "Unknown Track"}</h2>
-            <p>By: {data?.track?.artists?.[0]?.name}</p>
-            <p>from the Album: {data?.track?.album?.name}</p>
-          </li>
-        ) : (
-          <p>Artist is not available</p>
-        )}
-      </ul>
-      <br></br>
-      <h2>Spotify Player</h2>
-      {/* <SpotifyPlayer trackId={trackId} /> */}
-      {/* <SpotifyWebPlayer trackId={trackId} /> */}
+      <h1>Spotify Player</h1>
       <WebPlayBack token={data?.token} track={data?.track} />
     </div>
   );

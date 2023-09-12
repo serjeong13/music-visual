@@ -1,4 +1,5 @@
-import { getToken } from "next-auth/jwt";
+//import { getToken } from "next-auth/jwt";
+import { getToken } from "../../../../../public/lib/spotify";
 
 const handler = async (req, res) => {
   const session = await getSession({ req });
