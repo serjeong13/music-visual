@@ -23,7 +23,6 @@ const handler = async (req, res) => {
     const response = await getTrackDetails(accessToken, trackId);
     const response_token = await getToken(accessToken);
 
-    console.log("response_token", response_token);
     if (!response.ok) {
       // If the response is not OK, parse the JSON to get the error details
       const errorData = await response.json();

@@ -76,7 +76,6 @@ export const getTrackDetails = async (refresh_token, trackId) => {
     return null;
   }
   const { access_token } = await getAccessToken(refresh_token);
-  console.log("access_token", access_token);
   return fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -92,4 +91,24 @@ export const getToken = async (refresh_token) => {
   }
   const { access_token } = await getAccessToken(refresh_token);
   return access_token;
+};
+
+export const postPlayerTrackId = async (refresh_token, trackId, deviceId) => {
+  if (!refresh_token) {
+    console.error("Refresh token is undefined");
+    return null;
+  }
+  const { access_token } = await getAccessToken(refresh_token);
+  return fetch(
+    `https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+      body: JSON.stringify({
+        uris: [`spotify:track:${trackId}`],
+      }),
+    }
+  );
 };

@@ -39,13 +39,14 @@ function WebPlayback(props) {
       });
 
       player.addListener("ready", ({ device_id }) => {
-        console.log("Ready with Device ID", device_id);
-        // get track info from prop.track
-        // send the track uri and device_id to the play endpoint through backend
-        //https://api.spotify.com/v1/me/player/play (13ad70e1bc43ba7bee6e87f0eebb6fb491b25e9a),
-        //    {
-        //     "uris": ["spotify:track:7j9BbKDn6skg3iX1Hwjr0W"]
-        // }
+        // get trackId from prop.track and deviceId from prop.deviceId, then send to backend src/pages/api/playPlayerTrackId.js
+        fetch(
+          `/api/playPlayerTrackId?trackId=${props.track.id}&deviceId=${device_id}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            //console.log(data);
+          });
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -58,7 +59,7 @@ function WebPlayback(props) {
         }
 
         // state.track_window.current_track = props.track;
-        setTrack(state.track_window.current_track);
+        setTrack(state.track_window.track);
         setPaused(state.paused);
         console.log(state);
         player.getCurrentState().then((state) => {
@@ -68,31 +69,24 @@ function WebPlayback(props) {
 
       player.connect();
     };
-  }, []); // Re-run if props.token changes
+  }, []);
 
   return (
     <>
       <div className="container">
         <div className="main-wrapper">
           <img
-            src={current_track.album.images[0].url}
+            src={props.track.album.images[0].url}
             className="now-playing__cover"
             alt=""
           />
 
           <div className="now-playing__side">
-            <div className="now-playing__name">{current_track.name}</div>
+            <div className="now-playing__name">{props.track.name}</div>
 
             <div className="now-playing__artist">
-              {current_track.artists[0].name}
+              {props.track.artists[0].name}
             </div>
-            <button
-              onClick={() => {
-                player.previousTrack();
-              }}
-            >
-              &lt;&lt;
-            </button>
 
             <button
               onClick={() => {
@@ -100,15 +94,6 @@ function WebPlayback(props) {
               }}
             >
               {is_paused ? "PLAY" : "PAUSE"}
-            </button>
-
-            <button
-              className="btn-spotify"
-              onClick={() => {
-                player.nextTrack();
-              }}
-            >
-              &gt;&gt;
             </button>
           </div>
         </div>
