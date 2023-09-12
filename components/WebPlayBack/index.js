@@ -13,6 +13,26 @@ function WebPlayback(props) {
   const [is_paused, setPaused] = useState(false);
   const [is_active, setActive] = useState(false);
   const [current_track, setTrack] = useState(track);
+  const [userInput, setUserInput] = useState("ahtyfkjnkm");
+  const handleInput = (e) => {
+    console.log(e.target.value);
+    setUserInput(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // send userInput to backend
+    console.log("user inputttttt", userInput);
+    fetch(`/api/handleUserInput`, {
+      method: "POST",
+      body: JSON.stringify({ userInput }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => console.log("res------------------------", res.json()));
+    setUserInput("");
+    player.togglePlay();
+  };
 
   // Run this once when the component mounts
   useEffect(() => {
@@ -45,7 +65,7 @@ function WebPlayback(props) {
         )
           .then((res) => res.json())
           .then((data) => {
-            //console.log(data);
+            console.log(data);
           });
       });
 
@@ -55,12 +75,14 @@ function WebPlayback(props) {
 
       player.addListener("player_state_changed", (state) => {
         if (!state) {
+          setActive(false);
           return;
         }
 
         // state.track_window.current_track = props.track;
-        setTrack(state.track_window.track);
+        setTrack(state.track_window.current_track);
         setPaused(state.paused);
+        setActive(true);
         console.log(state);
         player.getCurrentState().then((state) => {
           !state ? setActive(false) : setActive(true);
@@ -97,6 +119,13 @@ function WebPlayback(props) {
             </button>
           </div>
         </div>
+        <br></br>
+        {is_paused && (
+          <form onSubmit={handleSubmit}>
+            <input type="text" onChange={handleInput} />
+            <button>Submit</button>
+          </form>
+        )}
       </div>
     </>
   );
