@@ -31,7 +31,6 @@ function WebPlayback(props) {
       },
     });
     const data = await res.json();
-    console.log("data------------------------", data);
 
     if (data.data) {
       setImageUrl(data.data[0].url);
@@ -65,18 +64,9 @@ function WebPlayback(props) {
       });
 
       player.addListener("ready", ({ device_id }) => {
-        // get trackId from prop.track and deviceId from prop.deviceId, then send to backend src/pages/api/playPlayerTrackId.js
         fetch(
           `/api/playPlayerTrackId?trackId=${props.track.id}&deviceId=${device_id}`
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-          });
-      });
-
-      player.addListener("not_ready", ({ device_id }) => {
-        console.log("Device ID has gone offline", device_id);
+        ).then((res) => res.json());
       });
 
       player.addListener("player_state_changed", (state) => {
@@ -89,7 +79,6 @@ function WebPlayback(props) {
         setTrack(state.track_window.current_track);
         setPaused(state.paused);
         setActive(true);
-        console.log(state);
         player.getCurrentState().then((state) => {
           !state ? setActive(false) : setActive(true);
         });
