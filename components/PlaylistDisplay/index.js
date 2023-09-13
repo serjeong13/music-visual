@@ -3,21 +3,30 @@ import Link from "next/link";
 
 export default function PlaylistDisplay({ list }) {
   return (
-    <>
-      {list &&
-        list.map((item) => (
-          <div key={item.id} className="flex justify-end items-center my-4">
-            <Link href={`/playlist/${item.id}`}>
-              <h1 className="text-lg font-bold mx-4">{item.name}</h1>
-              <Image
-                src={item.images[0]?.url}
-                alt={item.name}
-                width={300}
-                height={300}
-              />
-            </Link>
-          </div>
-        ))}
-    </>
+    <div className="p-4">
+      <ul className="space-y-4">
+        {list &&
+          list.map((item) => (
+            <li key={item.id} className="border-b border-gray-300 pb-2">
+              <Link
+                href={`/playlist/${item.id}`}
+                className="flex items-center space-x-4"
+              >
+                <Image
+                  src={item.images[0]?.url}
+                  alt={item.name}
+                  width={50}
+                  height={50}
+                  className="rounded-full"
+                />
+                <div>
+                  <h2 className="text-lg font-bold">{item.name}</h2>
+                  <p className="text-sm text-gray-500">by habibi</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+      </ul>
+    </div>
   );
 }

@@ -1,8 +1,9 @@
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SignOutButton from "../../components/SignOutButton";
 import SignInButton from "../../components/SignInButton";
 import PlaylistDisplay from "../../components/PlaylistDisplay";
+import Link from "next/link";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -22,26 +23,52 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (session) {
+      getMyPlaylists();
+    }
+  }, [session]);
+
   if (session) {
     return (
-      <>
-        You are signed in as {session?.token?.email} <br />
+      <div className="text-center">
+        <h1 className="text-3xl font-bold text-center">Music Visual</h1>
+        <img
+          src="https://picsum.photos/200/300"
+          alt="random"
+          className="mx-auto"
+        />
+        <p className="mb-8">
+          Music Singal lorem5 Singal lorem5 Singal lorem5 Singal lorem5 Singal
+          lorem5 Singal lorem5{" "}
+        </p>
+        <p className="text-lg font-bold mb-8">
+          You are signed in as {session?.token?.email}
+        </p>
+        <div>
+          <Link href="/playlist" className="">
+            Explore your playlists
+          </Link>
+        </div>
+
         <SignOutButton />
-        <hr />
-        <button
-          onClick={getMyPlaylists}
-          className="btn btn-secondary mx-auto my-2"
-        >
-          Get my playlists
-        </button>
-        <PlaylistDisplay list={list} />
-      </>
+      </div>
     );
   }
+
   return (
-    <>
-      Hello, please sign in <br />
+    <div className="text-center">
+      <h1 className="text-3xl font-bold text-center">Music Visual</h1>
+      <img
+        src="https://picsum.photos/200/300"
+        alt="random"
+        className="mx-auto"
+      />
+      <p className="mb-8">
+        Music Singal lorem5 Singal lorem5 Singal lorem5 Singal lorem5 Singal
+        lorem5 Singal lorem5
+      </p>
       <SignInButton />
-    </>
+    </div>
   );
 }

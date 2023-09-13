@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 function WebPlayback(props) {
   // Maintain player state
@@ -94,47 +95,68 @@ function WebPlayback(props) {
   }, []);
 
   return (
-    <>
-      <div className="container">
-        <div className="main-wrapper">
+    <div className="container mx-auto p-6 text-center">
+      <h2 className="text-2xl font-semibold mb-4">
+        {props.track.name} by {props.track.artists[0].name}
+      </h2>
+      <div>
+        <Image
+          className="rounded-full mx-auto mb-4"
+          src={props.track.album.images[0].url}
+          alt="Album cover"
+          width={100}
+          height={100}
+        />
+      </div>
+      <div className="border">
+        <h4 className="text-lg mb-6">
+          What are you feeling?{" "}
+          {imageUrl && <p className="text-lg mb-2">And what else?</p>}
+        </h4>
+      </div>
+
+      {isSubmitting && (
+        <div>
+          <div className="flex flex-wrap justify-center">
+            Loading indicator .....
+          </div>
+          <div></div>
+        </div>
+      )}
+
+      {imageUrl && (
+        <div>
           <img
-            src={props.track.album.images[0].url}
-            className="now-playing__cover"
-            alt=""
+            className="rounded-full mx-auto mb-4"
+            src={imageUrl}
+            alt="Generated image"
+            width={200}
+            height={200}
           />
+        </div>
+      )}
 
-          <div className="now-playing__side">
-            <div className="now-playing__name">{props.track.name}</div>
-
-            <div className="now-playing__artist">
-              {props.track.artists[0].name}
-            </div>
-
-            {imageUrl && (
-              <div className="image-container">
-                <img src={imageUrl} alt="Generated image" />
-              </div>
-            )}
-
-            {/* <button
-              onClick={() => {
-                player.togglePlay();
-              }}
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col">
+          <div>
+            <input
+              value={userInput}
+              placeholder="Enter 3 words"
+              onChange={handleInput}
+              className="inline-block p-2 border rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:ring-opacity-50"
+            />
+          </div>
+          <div>
+            <button
+              disabled={userInput === "" || isSubmitting}
+              className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
             >
-              {is_paused ? "PLAY" : "PAUSE"}
-            </button> */}
+              Submit
+            </button>
           </div>
         </div>
-        <br></br>
-        {
-          <form onSubmit={handleSubmit}>
-            <input type="text" value={userInput} onChange={handleInput} />
-            <button disabled={userInput === "" || isSubmitting}>Submit</button>
-          </form>
-        }
-      </div>
-    </>
+      </form>
+    </div>
   );
 }
-
 export default WebPlayback;

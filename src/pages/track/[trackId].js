@@ -24,18 +24,24 @@ export default function TrackPage() {
     fetcher
   );
 
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data) return <div>Loading...</div>;
+  if (error)
+    return (
+      <div className="text-red-600 font-medium">Error: {error.message}</div>
+    );
+  if (!data) return <div className="text-gray-500 font-medium">Loading...</div>;
 
   if (!data.track) {
-    return <div>Track details are not available.</div>;
+    return (
+      <div className="text-yellow-600 font-medium">
+        Track details are not available.
+      </div>
+    );
   }
 
   // getAuth token
 
   return (
-    <div>
-      <h1>Spotify Player</h1>
+    <div className="p-4">
       <WebPlayBack token={data?.token} track={data?.track} />
     </div>
   );
