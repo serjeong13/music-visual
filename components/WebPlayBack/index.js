@@ -15,6 +15,7 @@ function WebPlayback(props) {
   const [current_track, setTrack] = useState(track);
   const [userInput, setUserInput] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInput = (e) => {
     setUserInput(e.target.value);
@@ -22,6 +23,7 @@ function WebPlayback(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // send userInput to backend
     const res = await fetch(`/api/handleUserInput`, {
       method: "POST",
@@ -35,7 +37,7 @@ function WebPlayback(props) {
     if (data.data) {
       setImageUrl(data.data[0].url);
     }
-
+    setIsSubmitting(false);
     setUserInput("");
   };
 
@@ -127,7 +129,7 @@ function WebPlayback(props) {
         {
           <form onSubmit={handleSubmit}>
             <input type="text" value={userInput} onChange={handleInput} />
-            <button>Submit</button>
+            <button disabled={userInput === "" || isSubmitting}>Submit</button>
           </form>
         }
       </div>
