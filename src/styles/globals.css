@@ -8,17 +8,17 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: rgb(92, 106, 150) !important;
+  background-color: white !important;
   background: rgb(var(--background-start-rgb));
 }
 
@@ -26,6 +26,6 @@ button {
   @apply px-8 py-1 border-2 rounded font-bold text-white border-green-500 bg-blue-400 hover:bg-blue-500 hover:border-blue-700;
 }
 
-input {
+textarea {
   color: #1a202c; /* Dark blue equivalent to Tailwind's text-blue-900 */
 }
