@@ -70,7 +70,10 @@ function WebPlayback(props) {
       });
 
       player.addListener("player_state_changed", (state) => {
+        // TODO: add page refresh when track ends in order to display the input, url of the image
+
         if (!state) {
+          console.log("STATE ON PLAYER", state);
           setActive(false);
           return;
         }
@@ -111,22 +114,22 @@ function WebPlayback(props) {
               </div>
             )}
 
-            <button
+            {/* <button
               onClick={() => {
                 player.togglePlay();
               }}
             >
               {is_paused ? "PLAY" : "PAUSE"}
-            </button>
+            </button> */}
           </div>
         </div>
         <br></br>
-        {is_paused && (
+        {
           <form onSubmit={handleSubmit}>
             <input type="text" value={userInput} onChange={handleInput} />
             <button>Submit</button>
           </form>
-        )}
+        }
       </div>
     </>
   );
