@@ -19,6 +19,7 @@ function WebPlayback(props) {
   const [imageUrl, setImageUrl] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession();
+  const [retrievedReflection, setRetrievedReflection] = useState([]);
 
   const handleInput = (e) => {
     setUserInput(e.target.value);
@@ -90,7 +91,7 @@ function WebPlayback(props) {
         ).then((res) => res.json());
       });
 
-      player.addListener("player_state_changed", (state) => {
+      player.addListener("player_state_changed", async (state) => {
         // TODO: add page refresh when track ends in order to display the input, url of the image
 
         if (!state) {
@@ -172,6 +173,16 @@ function WebPlayback(props) {
               Submit
             </button>
           </div>
+          <button
+            onClick={() => {
+              // Redirect to the new page with query parameters
+              const email = encodeURIComponent(session.session.user.email);
+              const trackId = encodeURIComponent(props.track.id);
+              window.location.href = `/reflectionPage?email=${email}&trackId=${trackId}`;
+            }}
+          >
+            See Images
+          </button>
         </div>
       </form>
     </div>

@@ -34,4 +34,19 @@ export default async function handler(req, res) {
       res.status(400).json({ success: false, error: error.toString() });
     }
   }
+
+  if (req.method === "GET") {
+    const { email, trackId } = req.query;
+    try {
+      const reflection = await Reflection.find({ email, trackId });
+
+      if (!reflection) {
+        res.status(400).json({ success: false, error: "Reflection not found" });
+      }
+      res.status(200).json({ reflection });
+    } catch (error) {
+      console.error("Database Error: ", error);
+      res.status(400).json({ success: false, error: error.toString() });
+    }
+  }
 }
