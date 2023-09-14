@@ -9,6 +9,8 @@ export default function Home() {
   const { data: session } = useSession();
   const [list, setList] = useState([]);
 
+  console.log("session---------------", session);
+
   const getMyPlaylists = async () => {
     try {
       const response = await fetch("/api/playlists");
@@ -23,9 +25,20 @@ export default function Home() {
     }
   };
 
+  const checkUser = async () => {
+    const response = await fetch("/api/user", {
+      method: "POST",
+      body: JSON.stringify(session?.session?.user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   useEffect(() => {
     if (session) {
       getMyPlaylists();
+      checkUser();
     }
   }, [session]);
 

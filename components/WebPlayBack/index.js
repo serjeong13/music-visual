@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 function WebPlayback(props) {
   // Maintain player state
@@ -17,6 +18,7 @@ function WebPlayback(props) {
   const [userInput, setUserInput] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: session } = useSession();
 
   const handleInput = (e) => {
     setUserInput(e.target.value);
@@ -25,7 +27,7 @@ function WebPlayback(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // send userInput to backend
+
     const res = await fetch(`/api/handleUserInput`, {
       method: "POST",
       body: JSON.stringify({ userInput }),
@@ -36,8 +38,24 @@ function WebPlayback(props) {
     const data = await res.json();
 
     if (data.data) {
-      setImageUrl(data.data[0].url);
+      setImageUrl(data.data[0].b64_json);
     }
+
+    const payload = {
+      email: session.session.user.email,
+      trackId: props.track.id,
+      userInput: userInput,
+      imageUrl: data.data[0].b64_json,
+    };
+
+    const response = await fetch("/api/reflection", {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
     setIsSubmitting(false);
     setUserInput("");
   };
@@ -76,7 +94,6 @@ function WebPlayback(props) {
         // TODO: add page refresh when track ends in order to display the input, url of the image
 
         if (!state) {
-          console.log("STATE ON PLAYER", state);
           setActive(false);
           return;
         }
@@ -128,7 +145,8 @@ function WebPlayback(props) {
         <div>
           <img
             className="rounded-full mx-auto mb-4"
-            src={imageUrl}
+            // src={imageUrl}
+            src={`data:image/jpeg;base64,${imageUrl}`}
             alt="Generated image"
             width={200}
             height={200}
