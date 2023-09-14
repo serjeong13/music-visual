@@ -10,6 +10,8 @@ const generateImages = async (userInput, callback) => {
   const payLoad = JSON.stringify({
     prompt: userInput,
     n: 1,
+    response_format: "b64_json",
+    size: "256x256",
   });
 
   const options = {
@@ -24,7 +26,6 @@ const generateImages = async (userInput, callback) => {
 
   const req = https.request(options, (res) => {
     let data = "";
-
     res.on("data", (chunk) => {
       data += chunk;
     });
