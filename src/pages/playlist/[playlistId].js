@@ -42,7 +42,7 @@ export default function PlaylistPage() {
             >
               <Image
                 src={item.track.album.images[0].url}
-                alt={item.name}
+                alt="album cover"
                 width={50}
                 height={50}
                 className="rounded-full"

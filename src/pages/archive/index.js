@@ -33,7 +33,7 @@ export default function Archive() {
             >
               <Image
                 src={track.trackImage}
-                alt={track.trackName}
+                alt="album cover"
                 width={50}
                 height={50}
                 className="rounded-full"

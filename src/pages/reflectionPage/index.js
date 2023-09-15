@@ -7,7 +7,7 @@ export default function ReflectionPage() {
   const router = useRouter();
   const { email, trackId } = router.query;
 
-  const listenToTrackAgain = () => {
+  const listenTrackAgain = () => {
     // Navigate to the track page
     router.push(`/track/${trackId}`);
   };
@@ -43,7 +43,7 @@ export default function ReflectionPage() {
                   {" "}
                   <img
                     src={`data:image/jpeg;base64,${reflection.imageUrl[i]}`}
-                    alt={`User image ${i}`}
+                    alt="userInput image"
                     width={300}
                     height={300}
                   />
@@ -53,8 +53,8 @@ export default function ReflectionPage() {
           ))}
         </div>
       ))}
-      <button className="mb-8" onClick={listenToTrackAgain}>
-        Listen to the Track Again
+      <button className="mb-8" onClick={listenTrackAgain}>
+        Listen this track again
       </button>
     </div>
   );
