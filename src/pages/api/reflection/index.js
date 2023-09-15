@@ -6,7 +6,16 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     try {
-      const { email, trackId, userInput, imageUrl } = req.body;
+      const {
+        email,
+        trackId,
+        trackName,
+        artistName,
+        trackImage,
+        userInput,
+        imageUrl,
+      } = req.body;
+      console.log("req.body-------------------", req.body);
       let reflection = await Reflection.findOne({ email, trackId });
 
       if (reflection) {
@@ -24,6 +33,9 @@ export default async function handler(req, res) {
         reflection = await Reflection.create({
           email: email,
           trackId: trackId,
+          trackName: trackName,
+          artistName: artistName,
+          trackImage: trackImage,
           userInput: [userInput],
           imageUrl: [imageUrl],
         });

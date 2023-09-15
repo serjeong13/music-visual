@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import PlaylistDisplay from "../../../components/PlaylistDisplay";
-import Link from "next/link";
 
 export default function Home() {
   const { data: session } = useSession();
