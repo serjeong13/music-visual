@@ -7,6 +7,11 @@ export default function ReflectionPage() {
   const router = useRouter();
   const { email, trackId } = router.query;
 
+  const listenToTrackAgain = () => {
+    // Navigate to the track page
+    router.push(`/track/${trackId}`);
+  };
+
   useEffect(() => {
     if (email && trackId) {
       // Fetch reflections for this track
@@ -24,7 +29,7 @@ export default function ReflectionPage() {
   }, [email, trackId]);
 
   return (
-    <div>
+    <div className="mt-16 text-center">
       {reflections.map((reflection, index) => (
         <div key={index}>
           {reflection.userInput.map((input, i) => (
@@ -34,17 +39,23 @@ export default function ReflectionPage() {
 
               {/* Display corresponding image */}
               {reflection.imageUrl[i] && (
-                <img
-                  src={`data:image/jpeg;base64,${reflection.imageUrl[i]}`}
-                  alt={`User image ${i}`}
-                  width={300}
-                  height={300}
-                />
+                <div className="flex justify-center items-center mb-6">
+                  {" "}
+                  <img
+                    src={`data:image/jpeg;base64,${reflection.imageUrl[i]}`}
+                    alt={`User image ${i}`}
+                    width={300}
+                    height={300}
+                  />
+                </div>
               )}
             </div>
           ))}
         </div>
       ))}
+      <button className="mb-8" onClick={listenToTrackAgain}>
+        Listen to the Track Again
+      </button>
     </div>
   );
 }

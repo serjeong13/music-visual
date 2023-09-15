@@ -9,8 +9,6 @@ export default function Home() {
   const { data: session } = useSession();
   const [list, setList] = useState([]);
 
-  console.log("session---------------", session);
-
   const getMyPlaylists = async () => {
     try {
       const response = await fetch("/api/playlists");
@@ -45,26 +43,30 @@ export default function Home() {
   if (session) {
     return (
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-center">Music Visual</h1>
+        <h1 className="text-3xl font-bold text-center mb-8">
+          Welcome to Music Visual
+        </h1>
         <img
           src="https://picsum.photos/200/300"
           alt="random"
-          className="mx-auto"
+          className="mx-auto mb-8"
         />
         <p className="mb-8">
-          Music Singal lorem5 Singal lorem5 Singal lorem5 Singal lorem5 Singal
-          lorem5 Singal lorem5{" "}
+          You are set to start your music visual journey. Jump straight to your
+          Spotify playlists.
         </p>
-        <p className="text-lg font-bold mb-8">
-          You are signed in as {session?.token?.email}
-        </p>
-        <div>
-          <Link href="/playlist" className="">
-            Explore your playlists
+        <div className="mb-8">
+          <Link href="/playlist">
+            <button>Explore your playlists</button>
           </Link>
         </div>
-
-        <SignOutButton />
+        <p className="mb-8">
+          Not sure you want to explore our app? No worries, there is always a
+          way to sign out.
+        </p>
+        <div className="mb-8">
+          <SignOutButton />
+        </div>
       </div>
     );
   }
@@ -78,9 +80,10 @@ export default function Home() {
         className="mx-auto"
       />
       <p className="mb-8">
-        Music Singal lorem5 Singal lorem5 Singal lorem5 Singal lorem5 Singal
-        lorem5 Singal lorem5
+        Music Visual is a new journey through your favorite tracks with creating
+        a visual experience from AI.{" "}
       </p>
+      <p>Simply link your Spotify account to get started. </p>
       <SignInButton />
     </div>
   );

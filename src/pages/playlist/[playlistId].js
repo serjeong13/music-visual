@@ -32,10 +32,10 @@ export default function PlaylistPage() {
   if (!data) return <div className="text-gray-500">Loading...</div>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 mt-16">
       <ul className="space-y-4">
         {data.tracks.map((item) => (
-          <li key={item.track.id} className="border-b border-gray-300 pb-2">
+          <li key={item.track.id} className="border-b border-gray-300 pb-4">
             <Link
               href={`/track/${item.track.id}`}
               className="flex items-center space-x-4"

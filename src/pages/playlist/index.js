@@ -27,9 +27,7 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div className="text-center">
-      <h1 className="text-3xl font-bold text-center">Explore the magic</h1>
-
+    <div className="text-center mt-16">
       <PlaylistDisplay list={list} />
     </div>
   );
