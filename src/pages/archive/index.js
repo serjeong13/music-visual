@@ -6,15 +6,20 @@ export default function Archive() {
   const [tracks, setTracks] = useState([]);
   const { data: session } = useSession();
 
-  const email = session.session.user.email;
+  let email;
+  if (session) {
+    email = session.user.email;
+  }
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("/api/getTracksList");
-      const { data } = await res.json();
-      setTracks(data);
-    };
-    fetchData();
-  }, []);
+    if (email) {
+      const fetchData = async () => {
+        const res = await fetch("/api/getTracksList");
+        const { data } = await res.json();
+        setTracks(data);
+      };
+      fetchData();
+    }
+  }, [email]);
 
   return (
     <div>
