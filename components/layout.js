@@ -5,8 +5,8 @@ export default function Layout({ children }) {
   const router = useRouter();
   return (
     <>
-      {router.pathname !== "/" && <Navbar />}
       <main>{children}</main>
+      {router.pathname !== "/" && <Navbar />}
     </>
   );
 }

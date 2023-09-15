@@ -117,13 +117,14 @@ function WebPlayback(props) {
   }, []);
 
   return (
-    <div className="container mx-auto p-6 text-center">
-      <h2 className="text-2xl font-semibold mb-4">
-        {props.track.name} by {props.track.artists[0].name}
-      </h2>
+    <div className="container mx-auto p-6 text-center items-center">
+      <h2 className="text-lg font-bold">{props.track.name}</h2>
+      <p className="text-sm text-gray-500 mb-4">
+        by {props.track.artists[0].name}
+      </p>
       <div>
         <Image
-          className="rounded-full mx-auto mb-4"
+          className="rounded-full mx-auto mb-4 mt-4"
           src={props.track.album.images[0].url}
           alt="Album cover"
           width={100}
@@ -132,7 +133,8 @@ function WebPlayback(props) {
       </div>
       <div className="border">
         <h4 className="text-lg mb-6">
-          What are you feeling? {imageUrl && <p className="text-lg mb-2"></p>}
+          What do you feel when you hear this track?{" "}
+          {imageUrl && <p className="text-lg mb-2"></p>}
         </h4>
       </div>
 
@@ -159,15 +161,14 @@ function WebPlayback(props) {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col">
-          <div>
-            <input
-              value={userInput}
-              placeholder="Enter 3 words"
-              onChange={handleInput}
-              className="inline-block p-2 border rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:ring-opacity-50"
-            />
-          </div>
+        <div className="flex flex-col items-center justify-center">
+          <input
+            className="w-full max-w-lg mb-8 text-center"
+            value={userInput}
+            placeholder="Enter 3 words"
+            onChange={handleInput}
+          />
+
           {/* <div>
             <button
               disabled={userInput === "" || isSubmitting}

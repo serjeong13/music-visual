@@ -7,7 +7,7 @@ export default function PlaylistDisplay({ list }) {
       <ul className="space-y-4">
         {list &&
           list.map((item) => (
-            <li key={item.id} className="border-b border-gray-300 pb-2">
+            <li key={item.id} className="border-b border-gray-300 pb-4">
               <Link
                 href={`/playlist/${item.id}`}
                 className="flex items-center space-x-4"
