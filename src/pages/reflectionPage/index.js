@@ -37,8 +37,8 @@ export default function ReflectionPage() {
                 <img
                   src={`data:image/jpeg;base64,${reflection.imageUrl[i]}`}
                   alt={`User image ${i}`}
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                 />
               )}
             </div>

@@ -145,12 +145,12 @@ function WebPlayback(props) {
       {imageUrl && (
         <div>
           <img
-            className="rounded-full mx-auto mb-4"
+            className="mx-auto mb-4"
             // src={imageUrl}
             src={`data:image/jpeg;base64,${imageUrl}`}
             alt="Generated image"
-            width={200}
-            height={200}
+            width={500}
+            height={500}
           />
         </div>
       )}
