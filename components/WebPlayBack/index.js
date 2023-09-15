@@ -52,7 +52,6 @@ function WebPlayback(props) {
       imageUrl: data.data[0].b64_json,
     };
 
-    console.log("payload------------------------", payload);
     const response = await fetch("/api/reflection", {
       method: "POST",
       body: JSON.stringify(payload),
@@ -143,7 +142,6 @@ function WebPlayback(props) {
           <div className="flex flex-wrap justify-center">
             Loading the image .....
           </div>
-          <div></div>
         </div>
       )}
 

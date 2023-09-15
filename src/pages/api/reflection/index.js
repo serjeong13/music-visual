@@ -15,7 +15,6 @@ export default async function handler(req, res) {
         userInput,
         imageUrl,
       } = req.body;
-      console.log("req.body-------------------", req.body);
       let reflection = await Reflection.findOne({ email, trackId });
 
       if (reflection) {
