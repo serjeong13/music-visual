@@ -148,10 +148,8 @@ function WebPlayback(props) {
       )}
 
       {imageUrl && (
-        <div>
+        <div className="mb-8">
           <img
-            className="mx-auto mb-4"
-            // src={imageUrl}
             src={`data:image/jpeg;base64,${imageUrl}`}
             alt="Generated image"
             width={500}
@@ -161,37 +159,28 @@ function WebPlayback(props) {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mt-8">
           <input
-            className="w-full max-w-lg mb-8 text-center"
+            className="w-full max-w-lg mb-8 mt-8 text-center"
             value={userInput}
-            placeholder="Enter 3 words"
+            placeholder="Enter 3 words, press enter"
             onChange={handleInput}
           />
-
-          {/* <div>
-            <button
-              disabled={userInput === "" || isSubmitting}
-              className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-            >
-              Submit
-            </button>
-          </div> */}
-        </div>
-        <div>
-          <button
-            type="button"
-            onClick={() => {
-              // Redirect to the new page with query parameters
-              const email = encodeURIComponent(session.session.user.email);
-              const trackId = encodeURIComponent(props.track.id);
-              window.location.href = `/reflectionPage?email=${email}&trackId=${trackId}`;
-            }}
-          >
-            See Images
-          </button>
         </div>
       </form>
+      <div className="mt-30">
+        <button
+          type="button"
+          onClick={() => {
+            // Redirect to the new page with query parameters
+            const email = encodeURIComponent(session.session.user.email);
+            const trackId = encodeURIComponent(props.track.id);
+            window.location.href = `/reflectionPage?email=${email}&trackId=${trackId}`;
+          }}
+        >
+          See Images
+        </button>
+      </div>
     </div>
   );
 }
