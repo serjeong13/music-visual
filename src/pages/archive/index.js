@@ -8,7 +8,7 @@ export default function Archive() {
 
   let email;
   if (session) {
-    email = session.user.email;
+    email = session.session.user.email;
   }
   useEffect(() => {
     if (email) {
