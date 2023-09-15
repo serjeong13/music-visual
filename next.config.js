@@ -6,6 +6,11 @@ const nextConfig = {
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["mosaic.scdn.co", "i.scdn.co", "images-ak.spotifycdn.com"],
+    domains: [
+      "mosaic.scdn.co",
+      "i.scdn.co",
+      "images-ak.spotifycdn.com",
+      "image-cdn-ak.spotifycdn.com",
+    ],
   },
 };

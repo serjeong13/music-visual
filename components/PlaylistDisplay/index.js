@@ -15,13 +15,11 @@ export default function PlaylistDisplay({ list }) {
                 <Image
                   src={item.images[0]?.url}
                   alt={item.name}
-                  width={50}
-                  height={50}
-                  className="rounded-full"
+                  width={120}
+                  height={120}
                 />
                 <div>
                   <h2 className="text-lg font-bold">{item.name}</h2>
-                  <p className="text-sm text-gray-500">by habibi</p>
                 </div>
               </Link>
             </li>

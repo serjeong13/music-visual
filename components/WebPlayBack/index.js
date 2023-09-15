@@ -45,10 +45,14 @@ function WebPlayback(props) {
     const payload = {
       email: session.session.user.email,
       trackId: props.track.id,
+      trackName: props.track.name,
+      artistName: props.track.artists[0].name,
+      trackImage: props.track.album.images[0].url,
       userInput: userInput,
       imageUrl: data.data[0].b64_json,
     };
 
+    console.log("payload------------------------", payload);
     const response = await fetch("/api/reflection", {
       method: "POST",
       body: JSON.stringify(payload),
@@ -128,15 +132,14 @@ function WebPlayback(props) {
       </div>
       <div className="border">
         <h4 className="text-lg mb-6">
-          What are you feeling?{" "}
-          {imageUrl && <p className="text-lg mb-2">And what else?</p>}
+          What are you feeling? {imageUrl && <p className="text-lg mb-2"></p>}
         </h4>
       </div>
 
       {isSubmitting && (
         <div>
           <div className="flex flex-wrap justify-center">
-            Loading indicator .....
+            Loading the image .....
           </div>
           <div></div>
         </div>
@@ -165,15 +168,18 @@ function WebPlayback(props) {
               className="inline-block p-2 border rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent focus:ring-opacity-50"
             />
           </div>
-          <div>
+          {/* <div>
             <button
               disabled={userInput === "" || isSubmitting}
               className="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 disabled:opacity-50"
             >
               Submit
             </button>
-          </div>
+          </div> */}
+        </div>
+        <div>
           <button
+            type="button"
             onClick={() => {
               // Redirect to the new page with query parameters
               const email = encodeURIComponent(session.session.user.email);
