@@ -2,7 +2,6 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import SignOutButton from "../../components/SignOutButton";
 import SignInButton from "../../components/SignInButton";
-import PlaylistDisplay from "../../components/PlaylistDisplay";
 import Link from "next/link";
 
 export default function Home() {
@@ -23,20 +22,9 @@ export default function Home() {
     }
   };
 
-  const checkUser = async () => {
-    const response = await fetch("/api/user", {
-      method: "POST",
-      body: JSON.stringify(session?.session?.user),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
-
   useEffect(() => {
     if (session) {
       getMyPlaylists();
-      checkUser();
     }
   }, [session]);
 
