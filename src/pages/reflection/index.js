@@ -1,9 +1,8 @@
-// pages/reflectionPage.jsx
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import fetcherReflection from "../../../public/lib/fetcherReflection";
 
-export default function ReflectionPage() {
-  const [reflections, setReflections] = useState([]);
+export default function Reflection() {
   const router = useRouter();
   const { email, trackId } = router.query;
 
@@ -12,35 +11,30 @@ export default function ReflectionPage() {
     router.push(`/track/${trackId}`);
   };
 
-  useEffect(() => {
-    if (email && trackId) {
-      // Fetch reflections for this track
-      const fetchData = async () => {
-        const res = await fetch(
-          `/api/reflection?email=${email}&trackId=${trackId}`
-        );
-        const data = await res.json();
-        if (res.status === 200) {
-          setReflections(data.reflection);
-        }
-      };
-      fetchData();
-    }
-  }, [email, trackId]);
+  // Using SWR to fetch the reflections for the track
+  const { data: reflections, error } = useSWR(
+    email && trackId
+      ? `/api/reflection?email=${email}&trackId=${trackId}`
+      : null,
+    fetcherReflection
+  );
+
+  if (error)
+    return (
+      <div className="text-red-600 font-medium">Error: {error.message}</div>
+    );
+  if (!reflections)
+    return <div className="text-gray-500 font-medium">Loading...</div>;
 
   return (
-    <div className="mt-16 text-center">
+    <div className="mt-16 text-center font-bold">
       {reflections.map((reflection, index) => (
         <div key={index}>
           {reflection.userInput.map((input, i) => (
             <div key={i}>
-              {/* Display userInput */}
               <p>{input}</p>
-
-              {/* Display corresponding image */}
               {reflection.imageUrl[i] && (
                 <div className="flex justify-center items-center mb-6">
-                  {" "}
                   <img
                     src={`data:image/jpeg;base64,${reflection.imageUrl[i]}`}
                     alt="userInput image"

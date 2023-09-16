@@ -29,7 +29,7 @@ function WebPlayback(props) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const res = await fetch(`/api/handleUserInput`, {
+    const res = await fetch(`/api/userInput`, {
       method: "POST",
       body: JSON.stringify({ userInput }),
       headers: {
@@ -173,7 +173,7 @@ function WebPlayback(props) {
             // Redirect to the new page with query parameters
             const email = encodeURIComponent(session.session.user.email);
             const trackId = encodeURIComponent(props.track.id);
-            window.location.href = `/reflectionPage?email=${email}&trackId=${trackId}`;
+            window.location.href = `/reflection?email=${email}&trackId=${trackId}`;
           }}
         >
           See Images

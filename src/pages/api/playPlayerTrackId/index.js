@@ -1,4 +1,4 @@
-import { getUserPlaylists } from "../../../public/lib/spotify.js";
+import { postPlayerTrackId } from "../../../../public/lib/spotify";
 import { getSession } from "next-auth/react";
 
 const handler = async (req, res) => {
@@ -13,8 +13,14 @@ const handler = async (req, res) => {
       token: { accessToken },
     } = session;
 
-    //API call to Spotify by using getUserPlaylists function which needs an access token, grabbed from the session.
-    const response = await getUserPlaylists(accessToken);
+    //extract the track ID from the request query parameters
+    const trackId = req.query.trackId;
+
+    //extract the device ID from the request query parameters
+    const deviceId = req.query.deviceId;
+
+    //API call to Spotify by using postPlayerTrackId function which needs an access token, grabbed from the session, and trackId and device, grabbed from the request query parameters.
+    const response = await postPlayerTrackId(accessToken, trackId, deviceId);
     if (!response.ok) {
       const errorData = await response.json();
       return res.status(response.status).json({
@@ -24,10 +30,8 @@ const handler = async (req, res) => {
       });
     }
 
-    const { items } = await response.json();
-
     // send a success status with a message
-    res.status(200).json({ name: "Playlists API success", playlists: items });
+    res.status(200).json({ name: "PostPlayer success" });
   } catch (error) {
     //500 status in case of internal server errors.
     res.status(500).json({ error: "Internal Server Error" });
