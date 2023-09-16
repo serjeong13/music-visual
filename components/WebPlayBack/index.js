@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import useSWR, { mutate } from "swr";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function WebPlayback(props) {
-  // Maintain player state
   const track = {
     name: "",
     album: {
@@ -19,7 +21,12 @@ function WebPlayback(props) {
   const [imageUrl, setImageUrl] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session } = useSession();
-  const [retrievedReflection, setRetrievedReflection] = useState([]);
+  const { data: retrievedReflection, error } = useSWR(
+    session
+      ? `/api/reflection?email=${session.session.user.email}&trackId=${props.track.id}`
+      : null,
+    fetcher
+  );
 
   const handleInput = (e) => {
     setUserInput(e.target.value);
@@ -29,37 +36,51 @@ function WebPlayback(props) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const res = await fetch(`/api/userInput`, {
-      method: "POST",
-      body: JSON.stringify({ userInput }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
+    try {
+      const res = await fetch(`/api/userInput`, {
+        method: "POST",
+        body: JSON.stringify({ userInput }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
 
-    if (data.data) {
-      setImageUrl(data.data[0].b64_json);
+      const payload = {
+        email: session.session.user.email,
+        trackId: props.track.id,
+        trackName: props.track.name,
+        artistName: props.track.artists[0].name,
+        trackImage: props.track.album.images[0].url,
+        userInput: userInput,
+        imageUrl: data.data[0].b64_json,
+      };
+
+      mutate(
+        `/api/reflection?email=${session.session.user.email}&trackId=${props.track.id}`,
+        { ...retrievedReflection, ...payload },
+        false
+      );
+
+      if (data.data) {
+        setImageUrl(data.data[0].b64_json);
+        payload.imageUrl = data.data[0].b64_json;
+      }
+
+      await fetch("/api/reflection", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      mutate(
+        `/api/reflection?email=${session.session.user.email}&trackId=${props.track.id}`
+      );
+    } catch (error) {
+      console.log("Error occured", error);
     }
-
-    const payload = {
-      email: session.session.user.email,
-      trackId: props.track.id,
-      trackName: props.track.name,
-      artistName: props.track.artists[0].name,
-      trackImage: props.track.album.images[0].url,
-      userInput: userInput,
-      imageUrl: data.data[0].b64_json,
-    };
-
-    const response = await fetch("/api/reflection", {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
     setIsSubmitting(false);
     setUserInput("");
   };
@@ -94,9 +115,12 @@ function WebPlayback(props) {
         ).then((res) => res.json());
       });
 
-      player.addListener("player_state_changed", async (state) => {
-        // TODO: add page refresh when track ends in order to display the input, url of the image
+      player.addListener("not_ready", ({ device_id }) => {
+        console.log("Device ID has gone offline", device_id);
+      });
 
+      player.addListener("player_state_changed", async (state) => {
+        console.log("Player State Changed: ", state);
         if (!state) {
           setActive(false);
           return;
