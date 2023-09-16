@@ -2,30 +2,16 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import Link from "next/link";
 import Image from "next/image";
-
-// Fetcher function for SWR, using the session token for Authorization
-const fetcher = async (url, refreshToken) => {
-  try {
-    const res = await fetch(url, refreshToken);
-    if (!res.ok) {
-      throw new Error("An error occurred while fetching the data");
-    }
-    return res.json();
-  } catch (error) {
-    throw new Error("Network response was not ok");
-  }
-};
+import fetcherToken from "../../../public/lib/fetcherToken";
 
 export default function PlaylistPage() {
-  // Using Next.js router to capture dynamic route parameters
   const router = useRouter();
   const { playlistId } = router.query;
 
   // Using SWR to fetch playlist details
   const { data, error } = useSWR(
-    // Conditional fetching, based on whether playlistId exists
     playlistId ? `/api/tracks/${playlistId}` : null,
-    fetcher
+    fetcherToken
   );
 
   if (error) return <div className="text-red-600">Error: {error.message}</div>;

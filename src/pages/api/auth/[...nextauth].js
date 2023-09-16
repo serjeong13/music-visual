@@ -11,6 +11,8 @@ export default NextAuth({
     }),
   ],
 
+  secret: process.env.NEXTAUTH_SECRET,
+
   //in JWT callback adding the refresh_token from the account to the token object.
   callbacks: {
     async jwt({ token, account }) {

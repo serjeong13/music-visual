@@ -1,30 +1,18 @@
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import useSWR from "swr";
 import PlaylistDisplay from "../../../components/PlaylistDisplay";
+import fetcher from "../../../public/lib/fetcher";
 
 export default function Home() {
   const { data: session } = useSession();
-  const [list, setList] = useState([]);
+  const { data: list, error } = useSWR(
+    session ? "/api/playlists" : null,
+    fetcher
+  );
 
-  const getMyPlaylists = async () => {
-    try {
-      const response = await fetch("/api/playlists");
-      if (response.ok) {
-        const data = await response.json();
-        setList(data.playlists);
-      } else {
-        console.error(`Server responded with status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("There was an error fetching the playlists:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (session) {
-      getMyPlaylists();
-    }
-  }, [session]);
+  if (error)
+    return <div className="text-center mt-16">Error loading playlists.</div>;
+  if (!list) return <div className="text-center mt-16">Loading...</div>;
 
   return (
     <div className="text-center mt-16">

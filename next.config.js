@@ -11,6 +11,7 @@ module.exports = {
       "i.scdn.co",
       "images-ak.spotifycdn.com",
       "image-cdn-ak.spotifycdn.com",
+      "picsum.photos",
     ],
   },
 };
