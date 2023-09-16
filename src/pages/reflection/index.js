@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import fetcherReflection from "../../../public/lib/fetcherReflection";
+import { fetcherReflection } from "../../../public/lib/fetcher";
 
 export default function Reflection() {
   const router = useRouter();
