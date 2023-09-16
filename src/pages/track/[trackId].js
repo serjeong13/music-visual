@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import useSwr from "swr";
 import WebPlayBack from "../../../components/WebPlayBack";
-import fetcherToken from "../../../public/lib/fetcherToken";
+import { fetcherToken } from "../../../public/lib/fetcher";
 
 export default function TrackPage() {
   const router = useRouter();

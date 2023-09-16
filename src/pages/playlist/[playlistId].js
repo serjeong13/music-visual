@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import Link from "next/link";
 import Image from "next/image";
-import fetcherToken from "../../../public/lib/fetcherToken";
+import { fetcherToken } from "../../../public/lib/fetcher";
 
 export default function PlaylistPage() {
   const router = useRouter();
