@@ -150,12 +150,12 @@ function WebPlayback(props) {
           className="rounded-full mx-auto mb-4 mt-4"
           src={props.track.album.images[0].url}
           alt="Album cover"
-          width={100}
-          height={100}
+          width={50}
+          height={50}
         />
       </div>
       <div className="border">
-        <h4 className="text-lg mb-6">
+        <h4 className="text-lg mb-4">
           What do you feel when you hear this track?{" "}
           {imageUrl && <p className="text-lg mb-2"></p>}
         </h4>
@@ -183,9 +183,9 @@ function WebPlayback(props) {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col items-center justify-center mt-8">
           <input
-            className="w-full max-w-lg mb-8 mt-8 text-center"
+            className="w-full max-w-lg mb-6 mt-8 text-center"
             value={userInput}
-            placeholder="Enter 3 words, press enter"
+            placeholder="Enter 3 words and press enter"
             onChange={handleInput}
           />
         </div>
@@ -200,7 +200,7 @@ function WebPlayback(props) {
             window.location.href = `/reflection?email=${email}&trackId=${trackId}`;
           }}
         >
-          See Images
+          Stop the track and see the images
         </button>
       </div>
     </div>
