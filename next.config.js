@@ -14,6 +14,7 @@ module.exports = {
       "picsum.photos",
       "image-cdn-fa.spotifycdn.com",
       "blend-playlist-covers.spotifycdn.com",
+      "wrapped-images.spotifycdn.com",
     ],
   },
 };
